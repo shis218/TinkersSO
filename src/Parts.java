@@ -2,7 +2,7 @@
 public class Parts {
 private int ingameID; //Codigo fixo definido pelo protocolo,desta forma peças do mesmo tipo tem o mesmo ID. É definida no construtor e pode apenas ser consultada
 
-
+private Materiais materialTrait; //De qual material é primariamente feito essa parte, ela influencia nas caracteristicas de um item processado
 
 private int codigoDestaPeca; //Codigo desta peça gerado na inicialização, cuidado, maquinas diferentes podem gerar o mesmo codigo
 private String nome; //String do nome desta peça, não é possivel alterar seu nome após criada
@@ -11,6 +11,7 @@ private int[] recipeIDs; //Numero de InGameIDs do recipe
 
 private boolean existe;  //A peça existe e tem dados atrelados a ela
 private int[] codigoDasPeçasUsadas;  //Caso a parte seja criada, então deve colocar quais 'codigoDestaPeca'/'codigoDesteBloco'/'CodigoDesteItem' foram usadas pra completar a recipe
+
 
 //Getter-setters
 public int getIngameID() {
@@ -53,13 +54,14 @@ public boolean getExiste() {
 }
 
 //Construtor: Não é o item criado
-public Parts(int ingameID, String nome, String[] recipeString, int[] recipeIDs) {
+public Parts(int ingameID, String nome, String[] recipeString, int[] recipeIDs,Materiais material) {
 	super();
 	this.ingameID = ingameID;
 	this.nome = nome;
 	this.recipeString = recipeString;
 	this.recipeIDs = recipeIDs;
 	this.existe=false;
+	this.materialTrait=material;
 }
 //Monta item, lembre de consumir/destruir uma unidade de cada Id usado. Isto define que o item existe
 public boolean Monta(int CodigoDestaPeça,int[] codigoDasPeçasUsadas) {
@@ -76,7 +78,7 @@ public boolean Monta(int CodigoDestaPeça,int[] codigoDasPeçasUsadas) {
 
 //Caso você já esteja com uma Part montada(ou seja, já possui um codigo desta peça/itens usados) então utilize esse metodo de clonar a receita da Part
 public Parts clonaRecipe() {
-	Parts ret=new Parts(this.ingameID,this.nome,this.recipeString,this.recipeIDs);
+	Parts ret=new Parts(this.ingameID,this.nome,this.recipeString,this.recipeIDs,this.materialTrait);
 	return ret;
 }
 

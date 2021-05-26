@@ -18,4 +18,30 @@ public class Mundo {
 //Mundos compativeis caso estados de tabelas sejam iguais quando necessario, para isso utilize o checarCompatibilidade ou então clonar mundo
 //Clonagem de  configuração de mundo não importa jogadores nem os blocos ali salvos
 	
+	
+private int[][][] mundo = new int[30][30][30];
+private int ipMundoAtual;
+private int portaMundoAtual;
+private String[] nomelistaDeServidoresConhecidos; //Esses servidores podem ser part builders, part repositories, maquinas
+private int[] iplistaDeServidoresConhecidos;
+private int[] portalistaDeServidoresConhecidos;
+public int getIpMundoAtual() {
+	return ipMundoAtual;
+}
+public int getPortaMundoAtual() {
+	return portaMundoAtual;
+}
+public String[] getNomelistaDeServidoresConhecidos() {
+	return nomelistaDeServidoresConhecidos;
+}
+public int[] getIplistaDeServidoresConhecidos() {
+	return iplistaDeServidoresConhecidos;
+}
+public int[] getPortalistaDeServidoresConhecidos() {
+	return portalistaDeServidoresConhecidos;
+}
+
+
+
+	
 }
