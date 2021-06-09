@@ -14,7 +14,7 @@ public class Items {
 	
 
 	private boolean existe;  //Todos itens existem
-	private Parts[] parteUsadas; //Guarda informações das peças usads para criação da ferramenta, incluindo os ids unicos. Isso pode ser util numa maquina de desmontar.
+	private Part[] parteUsadas; //Guarda informações das peças usads para criação da ferramenta, incluindo os ids unicos. Isso pode ser util numa maquina de desmontar.
 
 	
 

@@ -1,5 +1,6 @@
+package minimoentregavel;
 
-public class Blocos implements Bloco {
+public class Blocos {
 //Blocos são um tipo especial de partes que não podem ser montados, eles apenas existem e não tem uma receita para crialos
 //Blocos podem ser utilizados como receita de parts/items
 //Blocos podem ser colocados no mundo
@@ -13,23 +14,19 @@ public class Blocos implements Bloco {
 	
 
 	//Getter-setters
-	@Override
 	public int getIngameID() {
 		return ingameID;
 	}
 
-	@Override
 	public int getcodigoDesteBloco() {
 		return codigoDesteBloco;
 	}
 
-	@Override
 	public String getNome() {
 		return nome;
 	}
 
 	//Afirma existencia do bloco
-	@Override
 	public boolean getExiste() {
 		return this.existe;
 	}
@@ -42,9 +39,8 @@ public class Blocos implements Bloco {
 		this.nome = nome;
 	}
 
-	@Override
-	public Bloco ClonaBloco(int NovoCodigoDeBloco) {
-		Bloco ret= new Blocos(this.ingameID,NovoCodigoDeBloco,this.nome);
+	public Blocos ClonaBloco(int NovoCodigoDeBloco) {
+		Blocos ret= new Blocos(this.ingameID,NovoCodigoDeBloco,this.nome);
 			return ret;
 		}
 /*Metodo externo		

@@ -1,31 +1,72 @@
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class usuario {
 
-private Blocos[] inventarioblocos;
-private Parts[] inventariopartes;
+private Bloco[] inventarioblocos;
+private Part[] inventariopartes;
 private Items[] inventarioItens;
 private int maximoInventario;
 private int proxBlock;
 private int proxPart;
 private int proxItem;
 
+public static void main(String[] args) {
+
+      String host = (args.length < 1) ? null : args[0];
+
+      try {
+
+         // Obtém uma referência para o registro do RMI
+
+         Registry registry = LocateRegistry.getRegistry(host);
+
+ 
+
+         // Obtém a stub do servidor
+
+         Part stub= (Part) registry.lookup("Parter");
+
+ 
+
+         // Chama o método do servidor e imprime a mensagem
+
+         String msg = stub.getExiste()+"";
+
+         System.out.println("Mensagem do Servidor: peça existe?" + msg); 
+
+         stub.Monta(stub.getCodigoDestaPeca(), null);
+         msg = stub.getExiste()+"";
+
+         System.out.println("Mensagem do Servidor: peça existe?" + msg); 
+         
+        	 
+         
+         
+      } catch (Exception ex) {
+
+         ex.printStackTrace();
+
+      } 
+
+}
 
 
 public usuario(int tamanhoInventario) {
 	//Gera inventarios
 	maximoInventario=tamanhoInventario;
-	inventarioblocos=new Blocos[tamanhoInventario];
-	inventariopartes=new Parts[tamanhoInventario];
+	inventarioblocos=new Bloco[tamanhoInventario];
+	inventariopartes=new Part[tamanhoInventario];
 	inventarioItens=new Items[tamanhoInventario];
 	proxBlock=0;
 	proxPart=0;
 	proxItem=0;
 }
 
-public Blocos[] getInventarioblocos() {
+public Bloco[] getInventarioblocos() {
 	return inventarioblocos;
 }
-public Parts[] getInventariopartes() {
+public Part[] getInventariopartes() {
 	return inventariopartes;
 }
 public Items[] getInventarioItens() {
@@ -34,7 +75,7 @@ public Items[] getInventarioItens() {
 
 
 //Metodo adiciona recebe um bloco/parts/items em overload
-public void adiciona(Blocos b){
+public void adiciona(Bloco b){
 	if(maximoInventario==proxBlock) {
 		return;
 	}
@@ -42,7 +83,7 @@ public void adiciona(Blocos b){
 	proxBlock++;
 	
 }
-public void adiciona(Parts p){
+public void adiciona(Part p){
 	if(maximoInventario==proxPart) {
 		return;
 	}
