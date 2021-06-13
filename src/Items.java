@@ -6,7 +6,7 @@ public class Items {
 	private boolean isFerramenta; //Se é um item basico ou ferramenta
 	private int ingameID; //Itens basicos possuem ingameID, ferramentas complexas não possuem 
 	
-	private Materiais[] materialTraits; //De quais material é feito o item
+	private ListaDeMateriais[] materialTraits; //De quais material é feito o item
 	private Encantamento[] enchants; //Lista de encantamentos, inicialmente com os vindo de materiais e podem ter extras adicionados por maquinas
 
 	private int codigoDesteitem; //Codigo unico deste item

@@ -18,6 +18,7 @@ public class ListaDeIdsENomesOficial {
 		StringBuilder resp=new StringBuilder();
 		int numero=0;
 		Iterator<String> iv=vector.iterator();
+		resp.append("\n");
 		while(iv.hasNext()) {
 		resp.append(numero+" - "+iv.next()+"\n");
 		numero++;
