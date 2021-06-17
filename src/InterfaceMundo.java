@@ -7,5 +7,7 @@ public interface InterfaceMundo extends Remote {
 	void adicionaPartServer(String Nome, String Funcao) throws RemoteException;
 
 	String ProcuraServer(String funcao) throws RemoteException;
+	
+	Part geraPart(int id) throws RemoteException ;
 
 }

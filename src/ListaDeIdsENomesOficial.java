@@ -1,8 +1,9 @@
 import java.util.Iterator;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class ListaDeIdsENomesOficial {
+public class ListaDeIdsENomesOficial implements Serializable {
 
 	private ArrayList<String> vector=new ArrayList<String>(); 
 	

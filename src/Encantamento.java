@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Encantamento {
+public class Encantamento implements Serializable{
 private int CodigoDoEncantamento;
 private String nome;
 private String[] requisitosDoEncantamento;

@@ -1,3 +1,4 @@
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -10,6 +11,7 @@ private int maximoInventario;
 private int proxBlock;
 private int proxPart;
 private int proxItem;
+private InterfaceMundo mundo;
 
 public static void main(String[] args) {
 
@@ -20,27 +22,21 @@ public static void main(String[] args) {
          // Obtém uma referência para o registro do RMI
 
          Registry registry = LocateRegistry.getRegistry(host);
-
- 
+         
+    	 
+         usuario usr=new usuario(42);
 
          // Obtém a stub do servidor
 
-         Part stub= (Part) registry.lookup("Parter");
-
- 
-
-         // Chama o método do servidor e imprime a mensagem
-
-         String msg = stub.getExiste()+"";
-
-         System.out.println("Mensagem do Servidor: peça existe?" + msg); 
-
-         stub.Monta(stub.getCodigoDestaPeca(), null);
-         msg = stub.getExiste()+"";
-
-         System.out.println("Mensagem do Servidor: peça existe?" + msg); 
+         usr.mundo= (InterfaceMundo) registry.lookup("Mundo");
+ /*        
+         Part pi=usr.mundo.geraPart(7);
          
-        	 
+         usr.adiciona(pi);
+ 
+         System.out.println("Ganhou part:  "+ usr.inventariopartes[0].getNome());
+   */
+         
          
          
       } catch (Exception ex) {
@@ -49,6 +45,37 @@ public static void main(String[] args) {
 
       } 
 
+}
+
+
+public String Executa(String Comando) throws RemoteException {
+	StringBuilder resp=new StringBuilder();
+	if(Comando.equalsIgnoreCase("lista itens")){
+			for(int i=0;i<inventarioItens.length;i++) {
+				if(inventarioItens[i]!=null) {
+					resp.append("item no slot: "+i+ " - "+ inventarioItens[i].getNome());
+				}
+			}
+	}
+	if(Comando.equalsIgnoreCase("lista parts")){
+		for(int i=0;i<inventariopartes.length;i++) {
+			if(inventariopartes[i]!=null) {
+				resp.append("item no slot: "+i+ " - "+ inventariopartes[i].getNome());
+			}
+		}
+	}
+	if(Comando.equalsIgnoreCase("lista parts")){
+		for(int i=0;i<inventarioblocos.length;i++) {
+			if(inventarioblocos[i]!=null) {
+				resp.append("item no slot: "+i+ " - "+ inventarioblocos[i].getNome());
+			}
+		}
+	}
+	
+	
+	
+	return "";
+	
 }
 
 
@@ -63,6 +90,18 @@ public usuario(int tamanhoInventario) {
 	proxItem=0;
 }
 
+//Construtor já com o mundo externo passado por parametro
+public usuario(int tamanhoInventario, Mundo m) {
+	//Gera inventarios
+	maximoInventario=tamanhoInventario;
+	inventarioblocos=new Bloco[tamanhoInventario];
+	inventariopartes=new Part[tamanhoInventario];
+	inventarioItens=new Items[tamanhoInventario];
+	proxBlock=0;
+	proxPart=0;
+	proxItem=0;
+	this.mundo=m;
+}
 public Bloco[] getInventarioblocos() {
 	return inventarioblocos;
 }

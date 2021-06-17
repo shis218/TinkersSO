@@ -129,5 +129,13 @@ public  void faznada() {
 	InterfacePartServer ToolForge;
 }
 
+@Override
+public Part geraPart(int id) throws RemoteException {
+	//(int ingameID, String nome, String[] recipeString, int[] recipeIDs,ListaDeMateriais material) throws RemoteException 
+	Parts pgerada=new Parts(id, lista.getNomeByID(id), null, null, null);
+	return pgerada;
+	
+}
+
 	
 }

@@ -1,4 +1,5 @@
 
+import java.io.Serializable;
 import java.rmi.*;
 
 import java.rmi.server.*;
@@ -8,11 +9,11 @@ import java.rmi.registry.*;
 import java.util.ArrayList;
 
 import minimoentregavel.parts;
-public class Parts implements Part {
+public class Parts implements Part, Serializable {
 int count=0;
 private int ingameID; //Codigo fixo definido pelo protocolo,desta forma peças do mesmo tipo tem o mesmo ID. É definida no construtor e pode apenas ser consultada
 
-private ListaDeMateriais materialTrait; //De qual material é primariamente feito essa parte, ela influencia nas caracteristicas de um item processado
+private Material materialTrait; //De qual material é primariamente feito essa parte, ela influencia nas caracteristicas de um item processado
 
 private int codigoDestaPeca; //Codigo desta peça gerado na inicialização, cuidado, maquinas diferentes podem gerar o mesmo codigo
 private String nome; //String do nome desta peça, não é possivel alterar seu nome após criada
@@ -72,7 +73,7 @@ private int[] codigoDasPeçasUsadas;  //Caso a parte seja criada, então deve colo
 	}
 
 	//Construtor: Não é o item criado
-	public Parts(int ingameID, String nome, String[] recipeString, int[] recipeIDs,ListaDeMateriais material) throws RemoteException {
+	public Parts(int ingameID, String nome, String[] recipeString, int[] recipeIDs,Material material) throws RemoteException {
 		super();
 		this.ingameID = ingameID;
 		this.nome = nome;
@@ -129,7 +130,8 @@ private int[] codigoDasPeçasUsadas;  //Caso a parte seja criada, então deve colo
 		return null; //Caso nao seja uma Part existindo, nao da pra gerar o bloco nem consumir a recipe
 	}
 	
-
+	
+	
 
 	
 }

@@ -30,5 +30,5 @@ public interface Part extends Remote {
 	Part clonaItem(int novoCodigoDePeça, int[] codigoDasPeçasUsadas) throws RemoteException;
 
 	Bloco transformaEmBloco() throws RemoteException;
-
+	
 }

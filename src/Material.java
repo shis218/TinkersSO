@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Material {
+public class Material implements Serializable {
 	public String getNome() {
 		return nome;
 	}
