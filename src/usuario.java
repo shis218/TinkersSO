@@ -50,6 +50,7 @@ public static void main(String[] args) {
 
 public String Executa(String Comando) throws RemoteException {
 	StringBuilder resp=new StringBuilder();
+/*-----------Comandos exatos-----------*/
 	if(Comando.equalsIgnoreCase("lista itens")){
 			for(int i=0;i<inventarioItens.length;i++) {
 				if(inventarioItens[i]!=null) {
@@ -71,7 +72,10 @@ public String Executa(String Comando) throws RemoteException {
 			}
 		}
 	}
+
 	
+	
+	/*-----------Comandos com variavel-----------*/
 	
 	
 	return "";

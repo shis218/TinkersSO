@@ -10,9 +10,14 @@ import java.util.ArrayList;
 public class InstanciaPartServers implements Remote {
 
 	public static void main(String[] args) throws AccessException, RemoteException, NotBoundException, AlreadyBoundException {
-		// TODO Auto-generated method stub
+		// Lista de usarios-mundos-partServers conhecidos
+		ArrayList<usuario> todosusers=new ArrayList<usuario>();
+		ArrayList<InterfaceMundo> todosMundos=new ArrayList<InterfaceMundo>();
+		ArrayList<PartServer> todosPartsServer=new ArrayList<PartServer>();
+		
 		
 		 Registry registry = LocateRegistry.getRegistry();
+		//Mundo padrão
 		 InterfaceMundo mundo= (InterfaceMundo) registry.lookup("Mundo");
 		 
 		 
