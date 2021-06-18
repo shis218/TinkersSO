@@ -71,7 +71,7 @@ public static void main(String[] Args) throws RemoteException, AlreadyBoundExcep
 	
 	Mundo World=new Mundo();
 	World.registry= LocateRegistry.getRegistry();
-	InterfaceMundo world=(InterfaceMundo) UnicastRemoteObject.exportObject(World, 0);
+	InterfaceMundo world=(InterfaceMundo) UnicastRemoteObject.exportObject(World, 0);  //Talvez de pra melhorar ao dar bind em outras ports aqui?
 	World.registry.rebind("Mundo", world);
 	System.out.print("Servidor mundo foi rebindado com sucesso");
 	World.MontaListaDeItensInicial(World);

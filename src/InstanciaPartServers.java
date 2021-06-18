@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class InstanciaPartServers implements Remote {
 
@@ -25,7 +26,8 @@ public class InstanciaPartServers implements Remote {
 		 for(int i=0;i<v.size();i++) {
 			 System.out.println(v.get(i)[0]+"-->"+ v.get(i)[1]);
 		 }
-		 
+		 Scanner sc=new Scanner(System.in);
+		// usr.executa();
 		
 	}
 

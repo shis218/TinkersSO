@@ -1,6 +1,7 @@
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Scanner;
 
 public class usuario {
 
@@ -37,9 +38,19 @@ public static void main(String[] args) {
          System.out.println("Ganhou part:  "+ usr.inventariopartes[0].getNome());
    */
          
+         Scanner sc=new Scanner(System.in);
+         System.out.println("Digite o comando a ser executado:");
+         String dig=sc.nextLine();
+         while(!dig.equalsIgnoreCase("sair")){
          
-         
-      } catch (Exception ex) {
+         System.out.println(usr.Executa(dig)); 
+         System.out.println("Digite o comando a ser executado:");
+         dig=sc.nextLine();
+      } 
+         System.out.println("Saindo");
+         return ;
+      }
+         catch (Exception ex) {
 
          ex.printStackTrace();
 
@@ -50,35 +61,54 @@ public static void main(String[] args) {
 
 public String Executa(String Comando) throws RemoteException {
 	StringBuilder resp=new StringBuilder();
+	Comando=Comando.replace("\n", "");
 /*-----------Comandos exatos-----------*/
 	if(Comando.equalsIgnoreCase("lista itens")){
+		resp.append("\n Listando itens:");
 			for(int i=0;i<inventarioItens.length;i++) {
 				if(inventarioItens[i]!=null) {
 					resp.append("item no slot: "+i+ " - "+ inventarioItens[i].getNome());
 				}
 			}
+			return resp.toString();
 	}
 	if(Comando.equalsIgnoreCase("lista parts")){
+		resp.append("\n Listando parts:");
 		for(int i=0;i<inventariopartes.length;i++) {
 			if(inventariopartes[i]!=null) {
 				resp.append("item no slot: "+i+ " - "+ inventariopartes[i].getNome());
 			}
 		}
+		return resp.toString();
 	}
-	if(Comando.equalsIgnoreCase("lista parts")){
+	if(Comando.equalsIgnoreCase("lista blocos")){
+		resp.append("\n Listando blocos:");
 		for(int i=0;i<inventarioblocos.length;i++) {
 			if(inventarioblocos[i]!=null) {
 				resp.append("item no slot: "+i+ " - "+ inventarioblocos[i].getNome());
 			}
 		}
+		return resp.toString();
 	}
 
 	
 	
 	/*-----------Comandos com variavel-----------*/
+	String[] Splitted=Comando.toLowerCase().split(" ");
+	switch(Splitted[0]){
+	case "adiciona":
+		
+		break;
+		
+	default: 	
+		resp.append("Comando invalido! \n");
+	}
+		
+		//Colocar pra reconhecer EXECUTA MAQUINA
 	
 	
-	return "";
+	
+	return resp.toString();
 	
 }
 
