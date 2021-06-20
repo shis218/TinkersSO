@@ -1,6 +1,6 @@
 import java.rmi.RemoteException;
 
-public class Items {
+public class Items implements Item {
 //Items são partes especiais que não podem ser colocados no mundo, no entanto elas podem ser geradas por resultados de ações em maquinas
 //Items podem ser encantados em maquinas que possuem suas propias listas de encantamento e não necessitam de serem unificadas com o mundo
 	
@@ -23,51 +23,67 @@ public class Items {
 
 	
 	
+	@Override
 	public boolean isFerramenta() {
 		return isFerramenta;
 	}
+	@Override
 	public int getIngameID() {
 		return ingameID;
 	}
+	@Override
 	public Material[] getMaterialTraits() {
 		return materialTraits;
 	}
+	@Override
 	public Encantamento[] getEnchants() {
 		return enchants;
 	}
+	@Override
 	public int getCodigoDesteitem() {
 		return codigoDesteitem;
 	}
+	@Override
 	public String getNome() {
 		return nome;
 	}
+	@Override
 	public boolean isExiste() {
 		return existe;
 	}
+	@Override
 	public Part[] getParteUsadas() {
 		return parteUsadas;
 	}
+	@Override
 	public void setFerramenta(boolean isFerramenta) {
 		this.isFerramenta = isFerramenta;
 	}
+	@Override
 	public void setIngameID(int ingameID) {
 		this.ingameID = ingameID;
 	}
+	@Override
 	public void setMaterialTraits(Material[] materialTraits) {
 		this.materialTraits = materialTraits;
 	}
+	@Override
 	public void setEnchants(Encantamento[] enchants) {
 		this.enchants = enchants;
 	}
+	@Override
 	public void setCodigoDesteitem(int codigoDesteitem) {
 		this.codigoDesteitem = codigoDesteitem;
 	}
+	@Override
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	@Override
 	public void setExiste(boolean existe) {
 		this.existe = existe;
 	}
+	@Override
 	public void setParteUsadas(Part[] parteUsadas) {
 		this.parteUsadas = parteUsadas;
 	}

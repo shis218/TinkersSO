@@ -139,5 +139,18 @@ public Part geraPart(int id) throws RemoteException {
 	
 }
 
+public Item geraItem(int id) throws RemoteException {
+	//(int ingameID, String nome, String[] recipeString, int[] recipeIDs,ListaDeMateriais material) throws RemoteException 
+	Items igerada=new Items(false, id, null, null, id, null, null);
+	return igerada;
+	
+}
+public Bloco geraBloco(int id) throws RemoteException {
+	//(int ingameID, String nome, String[] recipeString, int[] recipeIDs,ListaDeMateriais material) throws RemoteException 
+	Blocos bgerada=new Blocos(id, id, null);
+	return bgerada;
+	
+}
+
 	
 }

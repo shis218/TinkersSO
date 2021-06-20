@@ -9,5 +9,7 @@ public interface InterfaceMundo extends Remote {
 	String ProcuraServer(String funcao) throws RemoteException;
 	
 	Part geraPart(int id) throws RemoteException ;
+	Bloco geraBloco(int id) throws RemoteException ;
+	Item geraItem(int id) throws RemoteException ;
 
 }

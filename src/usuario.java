@@ -1,3 +1,4 @@
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -9,37 +10,34 @@ public class usuario {
 
 private Bloco[] inventarioblocos;
 private Part[] inventariopartes;
-private Items[] inventarioItens;
+private Item[] inventarioItens;
 private int maximoInventario;
 private int proxBlock;
 private int proxPart;
 private int proxItem;
 private InterfaceMundo mundo;
 private InterfacePartServer partserver;
+static Registry registry;
 
 public static void main(String[] args) {
-
-      String host = (args.length < 1) ? null : args[0];
+	usuario usr=new usuario(42);
+	
+	
+      //String host = (args.length < 1) ? null : args[0];
 
       try {
 
          // Obtém uma referência para o registro do RMI
 
-         Registry registry = LocateRegistry.getRegistry(host);
+    	  usr.registry = LocateRegistry.getRegistry();
          
     	 
-         usuario usr=new usuario(42);
+         
 
          // Obtém a stub do servidor
 
-         usr.mundo= (InterfaceMundo) registry.lookup("Mundo");
- /*        
-         Part pi=usr.mundo.geraPart(7);
-         
-         usr.adiciona(pi);
- 
-         System.out.println("Ganhou part:  "+ usr.inventariopartes[0].getNome());
-   */
+         usr.mundo= (InterfaceMundo) usr.registry.lookup("Mundo");
+
          
          Scanner sc=new Scanner(System.in);
          System.out.println("Digite o comando a ser executado:");
@@ -64,12 +62,12 @@ public static void main(String[] args) {
 
 
 
-public String Executa(String Comando) throws RemoteException {
+public String Executa(String Comando) throws RemoteException, NotBoundException {
 	StringBuilder resp=new StringBuilder();
 	Comando=Comando.replace("\n", "");
 /*-----------Comandos exatos-----------*/
-	if(Comando.equalsIgnoreCase("lista itens")||(Comando.equalsIgnoreCase("lista item"))){
-		resp.append("\n Listando itens:");
+	if(Comando.equalsIgnoreCase("lista meus itens")||(Comando.equalsIgnoreCase("lista item"))){
+		resp.append("\n Listando itens:\n");
 			for(int i=0;i<inventarioItens.length;i++) {
 				if(inventarioItens[i]!=null) {
 					resp.append("item no slot: "+i+ " - "+ inventarioItens[i].getNome());
@@ -77,8 +75,8 @@ public String Executa(String Comando) throws RemoteException {
 			}
 			return resp.toString();
 	}
-	if((Comando.equalsIgnoreCase("lista parts")) || (Comando.equalsIgnoreCase("lista part") )){
-		resp.append("\n Listando parts:");
+	if((Comando.equalsIgnoreCase("lista meus parts")) || (Comando.equalsIgnoreCase("lista part") )){
+		resp.append("\n Listando parts:\\n");
 		for(int i=0;i<inventariopartes.length;i++) {
 			if(inventariopartes[i]!=null) {
 				resp.append("item no slot: "+i+ " - "+ inventariopartes[i].getNome());
@@ -86,8 +84,8 @@ public String Executa(String Comando) throws RemoteException {
 		}
 		return resp.toString();
 	}
-	if(Comando.equalsIgnoreCase("lista blocos")||(Comando.equalsIgnoreCase("lista bloco"))){
-		resp.append("\n Listando blocos:");
+	if(Comando.equalsIgnoreCase("lista meus blocos")||(Comando.equalsIgnoreCase("lista bloco"))){
+		resp.append("\n Listando blocos:\\n");
 		for(int i=0;i<inventarioblocos.length;i++) {
 			if(inventarioblocos[i]!=null) {
 				resp.append("item no slot: "+i+ " - "+ inventarioblocos[i].getNome());
@@ -96,7 +94,7 @@ public String Executa(String Comando) throws RemoteException {
 		return resp.toString();
 	}
 	if(Comando.equalsIgnoreCase("lista funções")){
-		resp.append("Server possui as seguintes funções:");
+		resp.append("Server possui as seguintes funções:\n");
 		ArrayList<String[]> vetf=this.mundo.getNomelistaDeServidoresConhecidos();
 		Iterator<String[]> iv=vetf.iterator();
 		int count=0;
@@ -107,9 +105,29 @@ public String Executa(String Comando) throws RemoteException {
 		return resp.toString();
 		
 	}
+	
+	if(Comando.equalsIgnoreCase("lista itens do server")){
+		
+		return resp.toString();
+		
+	}
+	
+	if(Comando.equalsIgnoreCase("lista parts do server")){
+		
+		return resp.toString();
+		
+	}
+
+	if(Comando.equalsIgnoreCase("lista blocos do server")){
+	
+	return resp.toString();
+	
+	}
+	
+	
 	if(Comando.equalsIgnoreCase("help")){
 		resp.append("\n Para utilizar digite um dos comandos: adiciona/cria (blocos/parts/itens) [item name] ,monta (blocos/parts/itens) [item name],  deleta(bloco/parts/itens) [item name] , ");
-		resp.append("\n loga [nome do server] , lista (itens/blocos/parts/funções) , desloga [nome do server], mudaMundo [nome do mundo], procura server [funcao],loga aleatorio [função]");
+		resp.append("\n loga [nome do server] , desloga , lista meus (itens/blocos/parts) , lista funções, lista (blocos/parts/itens) do server, procura server [funcao],loga aleatorio [função]");
 		
 		
 		return resp.toString();
@@ -124,28 +142,57 @@ public String Executa(String Comando) throws RemoteException {
 			switch(Splitted[1]){
 				case "bloco":
 				case "blocos":
-					
+					adiciona(mundo.geraBloco(Integer.parseInt(Splitted[2])));
 					break;
 				case "part":
 				case "parts":
-				
+					adiciona(mundo.geraPart(Integer.parseInt(Splitted[2])));
 					break;
 					
 				case "item":
 				case "itens":
+					
+					adiciona(mundo.geraItem(Integer.parseInt(Splitted[2])));
 					break;
 					
 		}
+			break;
 		case "deleta":	
-			
+			switch(Splitted[1]){
+				case "bloco":
+				case "blocos":
+					removeBloco(Integer.parseInt(Splitted[2]));
+					break;
+				case "part":
+				case "parts":
+					removeParte(Integer.parseInt(Splitted[2]));
+					break;
+					
+				case "item":
+				case "itens":
+					
+					removeItem(Integer.parseInt(Splitted[2]));
+					break;
+				
+			}	
 			break;
 		case "loga":
-			
+			partserver=(InterfacePartServer) registry.lookup(Splitted[1]);
+			resp.append("Logando em:"+Splitted[1]);
 			break;
+		case "desloga":
+			resp.append("Deslogando de: "+partserver.getNome());
+			partserver=null;
+			
+			break;	
+			
 		case "monta":
 			switch(Splitted[1]){
 				case "parts":
 				case "part":
+					//Monta a parte
+					
+					
 				break;
 				
 				default: 
@@ -156,11 +203,15 @@ public String Executa(String Comando) throws RemoteException {
 			break;
 			
 		case "procura":
-			if(Comando.equalsIgnoreCase("server")) {
+			if(Splitted[1].equalsIgnoreCase("server")) {
+				//Recebe a string do server e se conecta com ele.
+				String sev=mundo.ProcuraServer(Splitted[2]);
+				resp.append("Logando em:"+sev);
 				
+				partserver=(InterfacePartServer) registry.lookup(sev);
 			}
 			else {
-				//
+				resp.append("Comando invalido! \n");
 			}
 			break;
 	default: 	
@@ -181,7 +232,7 @@ public usuario(int tamanhoInventario) {
 	maximoInventario=tamanhoInventario;
 	inventarioblocos=new Bloco[tamanhoInventario];
 	inventariopartes=new Part[tamanhoInventario];
-	inventarioItens=new Items[tamanhoInventario];
+	inventarioItens=new Item[tamanhoInventario];
 	proxBlock=0;
 	proxPart=0;
 	proxItem=0;
@@ -193,7 +244,7 @@ public usuario(int tamanhoInventario, Mundo m) {
 	maximoInventario=tamanhoInventario;
 	inventarioblocos=new Bloco[tamanhoInventario];
 	inventariopartes=new Part[tamanhoInventario];
-	inventarioItens=new Items[tamanhoInventario];
+	inventarioItens=new Item[tamanhoInventario];
 	proxBlock=0;
 	proxPart=0;
 	proxItem=0;
@@ -205,34 +256,39 @@ public Bloco[] getInventarioblocos() {
 public Part[] getInventariopartes() {
 	return inventariopartes;
 }
-public Items[] getInventarioItens() {
+public Item[] getInventarioItens() {
 	return inventarioItens;
 }
 
 
 //Metodo adiciona recebe um bloco/parts/items em overload
-public void adiciona(Bloco b){
+public void adiciona(Bloco b) throws RemoteException {
 	if(maximoInventario==proxBlock) {
+		System.out.print("Item desse usuario chegou no limite.");
 		return;
 	}
 	inventarioblocos[proxBlock]=b;
 	proxBlock++;
+	System.out.println(b.getNome()+"Adicionado com sucesso");
 	
 }
-public void adiciona(Part p){
+public void adiciona(Part p) throws RemoteException{
 	if(maximoInventario==proxPart) {
+		System.out.print("Item desse usuario chegou no limite.");
 		return;
 	}
 	inventariopartes[proxPart]=p;
 	proxPart++;
-	
+	System.out.println(p.getNome()+"Adicionado com sucesso");
 }
-public void adiciona(Items i){
+public void adiciona(Item i)  throws RemoteException{
 	if(maximoInventario==proxItem) {
+		System.out.print("Item desse usuario chegou no limite.");
 		return;
 	}
 	inventarioItens[proxItem]=i;
 	proxItem++;
+	System.out.println(i.getNome()+"Adicionado com sucesso");
 }
 
 public void removeBloco(int index){
