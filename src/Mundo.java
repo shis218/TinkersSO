@@ -29,11 +29,13 @@ public class Mundo implements InterfaceMundo  {
 //Clonagem de  configuração de mundo não importa jogadores nem os blocos ali salvos
 	
 	
-private int[][][] mundo = new int[30][30][30];
+private int[][][] mundo = new int[30][30][30]; //Devido ao tempo de implementação, essa parte não sera implementada
 private ArrayList<String[]> nomelistaDeServidoresConhecidos=new ArrayList<String[]>(); //Esses servidores podem ser part builders, part repositories, maquinas
-Registry registry;
-ListaDeIdsENomesOficial lista= new ListaDeIdsENomesOficial();
-ListaDeMateriais materiais=new ListaDeMateriais();
+private Registry registry;
+private ListaDeIdsENomesOficial lista= new ListaDeIdsENomesOficial();
+private ListaDeMateriais materiais=new ListaDeMateriais();
+
+
 @Override
 public ArrayList<String[]> getNomelistaDeServidoresConhecidos() {
 	return nomelistaDeServidoresConhecidos;

@@ -21,13 +21,15 @@ public class InstanciaPartServers implements Remote {
 		//Mundo padrão
 		 InterfaceMundo mundo= (InterfaceMundo) registry.lookup("Mundo");
 		 
-		 
+		 InstanciaPartServers ipv= new InstanciaPartServers();
+		 ipv.criaFurnaces();
 		 ArrayList<String[]> v= mundo.getNomelistaDeServidoresConhecidos();
 		 for(int i=0;i<v.size();i++) {
 			 System.out.println(v.get(i)[0]+"-->"+ v.get(i)[1]);
 		 }
 		 Scanner sc=new Scanner(System.in);
 		// usr.executa();
+		 
 		
 	}
 
