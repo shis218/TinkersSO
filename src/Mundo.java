@@ -35,10 +35,38 @@ private Registry registry;
 private ListaDeIdsENomesOficial lista= new ListaDeIdsENomesOficial();
 private ListaDeMateriais materiais=new ListaDeMateriais();
 
+public int adicionaItemNoServer(String Nome) {
+	//Esse adiciona item é tanto para Partes/Blocos/Itens, já que a lista deles é unica que é seus Ids-nomes
+	
+	return lista.AdicionaItem(Nome); 
+}
 
-@Override
+
+
 public ArrayList<String[]> getNomelistaDeServidoresConhecidos() {
 	return nomelistaDeServidoresConhecidos;
+}
+
+public int getidItem(String nome) {
+	return lista.getIdByNome(nome);
+}
+
+
+public String getStringItem(int id) {
+	
+	return lista.getNomeByID(id);
+}
+
+public int getidMaterial(String nome) {
+	return materiais.getIdByNome(nome);
+}
+
+public String getStringMaterial(int id) {
+	return materiais.getNomeByID(id);
+}
+public Material getMaterialbyString(String nome) {
+	return materiais.getMaterialByNome(nome);
+	
 }
 
 @Override
@@ -81,7 +109,7 @@ public static void main(String[] Args) throws RemoteException, AlreadyBoundExcep
 }
 
 
-public void MontaListaDeItensInicial(Mundo World) {
+private void MontaListaDeItensInicial(Mundo World) {
 	World.lista.AdicionaItem("Paper"); 
 	World.lista.AdicionaItem("Constantan"); 
 	World.lista.AdicionaItem("Treated Wood"); 
@@ -151,6 +179,11 @@ public Bloco geraBloco(int id) throws RemoteException {
 	return bgerada;
 	
 }
+
+
+
+
+
 
 	
 }

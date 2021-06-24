@@ -25,6 +25,23 @@ public int getIdByNome(String Nome) {
 	return -1;
 }
 
+public Material getMaterialByNome(String Nome) {
+	Iterator<Material> iv=vector.iterator();
+	int count=0;
+	while(iv.hasNext()) {
+		if(iv.next().getNome().equals(Nome)) {
+			return vector.get(count); //Encontrou e devolve a classe Material dentro do vector
+			
+		}
+		count++;
+			
+	}
+	
+	
+	return null;
+	
+}
+
 public String  listMats() {
 	StringBuilder resp=new StringBuilder();
 	int numero=0;

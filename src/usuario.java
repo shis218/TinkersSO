@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import minimoentregavel.World;
+
 public class usuario {
 
 private Bloco[] inventarioblocos;
@@ -126,9 +128,9 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 	
 	
 	if(Comando.equalsIgnoreCase("help")){
-		resp.append("\n Para utilizar digite um dos comandos: adiciona/cria (blocos/parts/itens) [item name] ,monta (blocos/parts/itens) [item name],  deleta(bloco/parts/itens) [item name] , ");
-		resp.append("\n loga [nome do server] , desloga , lista meus (itens/blocos/parts) , lista funções, lista (blocos/parts/itens) do server, procura server [funcao],loga aleatorio [função]");
-		
+		resp.append("\n Para utilizar digite um dos comandos: adiciona/cria (blocos/parts/itens) [item name] ,monta parts [item name],  deleta(bloco/parts/itens) [item name] , ");
+		resp.append("\n loga [nome do server] , desloga , lista meus (itens/blocos/parts) , lista funções, lista (blocos/parts/itens) do server, procura server [funcao],loga aleatorio [função] ,");
+		resp.append("\n ");
 		
 		return resp.toString();
 	}
@@ -177,6 +179,13 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 			}	
 			break;
 		case "loga":
+			if(Splitted[1].equalsIgnoreCase("aleatorio")){
+				String serv=mundo.ProcuraServer(Splitted[2]);
+				partserver=(InterfacePartServer) registry.lookup(serv);
+				resp.append("Logando em:"+serv);
+				break; 
+			}
+			
 			partserver=(InterfacePartServer) registry.lookup(Splitted[1]);
 			resp.append("Logando em:"+Splitted[1]);
 			break;
@@ -191,8 +200,16 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 				case "parts":
 				case "part":
 					//Monta a parte
-					
-					
+					int[] pv=new int[9];
+					pv[0]=Integer.parseInt(Splitted[3]);
+					pv[1]=Integer.parseInt(Splitted[4]);
+					pv[2]=Integer.parseInt(Splitted[5]);
+					pv[3]=Integer.parseInt(Splitted[6]);
+					pv[4]=Integer.parseInt(Splitted[7]);
+					pv[5]=Integer.parseInt(Splitted[8]);
+					pv[6]=Integer.parseInt(Splitted[9]);
+					pv[7]=Integer.parseInt(Splitted[10]);
+					partserver.MontaRecipe(Splitted[2],pv);
 				break;
 				
 				default: 

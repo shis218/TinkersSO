@@ -11,5 +11,10 @@ public interface InterfaceMundo extends Remote {
 	Part geraPart(int id) throws RemoteException ;
 	Bloco geraBloco(int id) throws RemoteException ;
 	Item geraItem(int id) throws RemoteException ;
-
+	int adicionaItemNoServer(String Nome);
+	int getidItem(String nome);
+	String getStringItem(int id);
+	int getidMaterial(String nome);
+	String getStringMaterial(int id);
+	 Material getMaterialbyString(String nome);
 }
