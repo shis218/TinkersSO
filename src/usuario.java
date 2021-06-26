@@ -108,20 +108,22 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 		
 	}
 	
-	if(Comando.equalsIgnoreCase("lista itens do server")){
-		
+	if(Comando.equalsIgnoreCase("lista itens do mundo")){
+		resp.append("[Nota: aqui nao tem diferença de bloco-part-iten] Server mundo possui os seguintes itens:\n");
+		resp.append(mundo.listaItens());
 		return resp.toString();
 		
 	}
 	
 	if(Comando.equalsIgnoreCase("lista parts do server")){
-		
+		resp.append("Server"+partserver.getNome() +" possui as seguintes parts:\n");
+		resp.append(partserver.consultaRecipes());
 		return resp.toString();
 		
 	}
 
 	if(Comando.equalsIgnoreCase("lista blocos do server")){
-	
+	resp.append("Sistema de blocos não foi implementado");
 	return resp.toString();
 	
 	}

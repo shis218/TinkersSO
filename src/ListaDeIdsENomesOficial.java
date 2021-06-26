@@ -29,7 +29,7 @@ public class ListaDeIdsENomesOficial implements Serializable {
 	//Retorna ID do item caso já exista, senão retorna aonde foi colocado
 	public int AdicionaItem(String nome) {
 		if(getIdByNome(nome)==-1) {
-			vector.add(nome);
+			vector.add(nome.toLowerCase());
 		}
 		return getIdByNome(nome);
 		

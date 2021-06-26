@@ -1,3 +1,4 @@
+import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -39,8 +40,10 @@ public static void main(String[] args) {
          // Obtém a stub do servidor
 
     	  adm.mundo= (InterfaceMundo) adm.registry.lookup("Mundo");
-
-         
+    	/*  adm.adicionaMaterialNoServer("Knightslime2", 320, 415, 50, (float) 1.4);
+    	  adm.adicionaMaterialNoServer("Knightslime", 320, 415, 50, (float) 1.4);
+    	  System.out.println(adm.mundo.PrintaMateriais());
+    	  */
          Scanner sc=new Scanner(System.in);
          System.out.println("Digite o comando a ser executado:");
          String dig=sc.nextLine();
@@ -64,85 +67,82 @@ public static void main(String[] args) {
 
 
 
-public String Executa(String Comando) throws RemoteException, NotBoundException {
+public String Executa(String Comando) throws RemoteException, NotBoundException, AlreadyBoundException {
 	StringBuilder resp=new StringBuilder();
 	Comando=Comando.replace("\n", "");
-/*-----------Comandos exatos-----------*/
-	if(Comando.equalsIgnoreCase("lista meus itens")||(Comando.equalsIgnoreCase("lista item"))){
-		resp.append("\n Listando itens:\n");
-			for(int i=0;i<inventarioItens.length;i++) {
-				if(inventarioItens[i]!=null) {
-					resp.append("item no slot: "+i+ " - "+ inventarioItens[i].getNome());
-				}
-			}
-			return resp.toString();
-	}
-	if((Comando.equalsIgnoreCase("lista meus parts")) || (Comando.equalsIgnoreCase("lista part") )){
-		resp.append("\n Listando parts:\\n");
-		for(int i=0;i<inventariopartes.length;i++) {
-			if(inventariopartes[i]!=null) {
-				resp.append("item no slot: "+i+ " - "+ inventariopartes[i].getNome());
-			}
-		}
-		return resp.toString();
-	}
-	if(Comando.equalsIgnoreCase("lista meus blocos")||(Comando.equalsIgnoreCase("lista bloco"))){
-		resp.append("\n Listando blocos:\\n");
-		for(int i=0;i<inventarioblocos.length;i++) {
-			if(inventarioblocos[i]!=null) {
-				resp.append("item no slot: "+i+ " - "+ inventarioblocos[i].getNome());
-			}
-		}
-		return resp.toString();
-	}
-	if(Comando.equalsIgnoreCase("lista funções")){
-		resp.append("Server possui as seguintes funções:\n");
-		ArrayList<String[]> vetf=this.mundo.getNomelistaDeServidoresConhecidos();
-		Iterator<String[]> iv=vetf.iterator();
-		int count=0;
-		while(iv.hasNext()) {
-			String[] nextone=iv.next();
-			resp.append(nextone[0]+"  "+nextone[1]+"\n");
-			}
-		return resp.toString();
-		
-	}
-	
-	if(Comando.equalsIgnoreCase("lista itens do server")){
-		
-		return resp.toString();
-		
-	}
-	
-	if(Comando.equalsIgnoreCase("lista parts do server")){
-		
-		return resp.toString();
-		
-	}
-
-	if(Comando.equalsIgnoreCase("lista blocos do server")){
-	
-	return resp.toString();
-	
-	}
-	
-	
-	if(Comando.equalsIgnoreCase("help")){
-		resp.append("\n Para utilizar digite um dos comandos: adiciona/cria (blocos/parts/itens) [item name] ,monta parts [item name],  deleta(bloco/parts/itens) [item name] , ");
-		resp.append("\n loga [nome do server] , desloga , lista meus (itens/blocos/parts) , lista funções, lista (blocos/parts/itens) do server, procura server [funcao],loga aleatorio [função] ,");
-		resp.append("\n ");
-		
-		return resp.toString();
-	}
-	
-	
 	/*-----------Comandos com variavel-----------*/
 	String[] Splitted=Comando.toLowerCase().split(" ");
 	switch(Splitted[0]){		
-		case "loga":
-	
+		case "deleta":
+		//Sempre deleta server;
+			DesligaPartServer(Splitted[2]);
 			
+		break;
+		
+		case "adiciona":
+			switch(Splitted[1]){
+			case "item":
+				adicionaItemNoServer(Splitted[2]);
+				resp.append("Adicionado");
 			break;
+			case "bloco":
+				adicionaBlocoNoServer(Splitted[2]);
+				resp.append("Adicionado,mas blocos não são funcionais");
+			break;
+			
+			case "part":
+				//Escreve nome da parte, nome da maquina, e seu material, então uma sequencia de itens do recipe, caso uma das strrings seja "0", pare.
+				String nome=Splitted[2];
+				String nomeMaquinaRegistry=Splitted[3];
+				String nomeMaterial=Splitted[4];
+				String[] recipeString=new String[9];
+				for(int i=0;i<9;i++) {
+					if(Splitted[i+5].equals("0")) {
+						for(int j=i;j<9;j++) {
+							//Prenche com "null"
+							recipeString[j] = "null";
+						}
+						break;
+					}
+				recipeString[i] = Splitted[i+5];
+				}
+				
+				adicionaPartRecipeNoServer(nome, nomeMaquinaRegistry,recipeString, nomeMaterial);
+				resp.append("Adicionado");
+			break;
+			
+			case "server":
+				//Adiciona um servidor [Nome-> funcao]
+				criaPartServer(Splitted[2], Splitted[3]);
+				break;
+			}
+			
+		break;
+		case "lista":
+			switch(Splitted[1]){
+			case "item":
+				resp.append("Listando itens no mundo");
+				resp.append(mundo.listaItens());
+			break;
+			case "bloco":
+				resp.append("Listando itens no mundo, blocos estao desativados");
+				resp.append(mundo.listaItens());
+			break;
+			
+			case "parts":
+				resp.append("Lista de parts no servidor:"+Splitted[2]+" \n");
+				Registry registry = LocateRegistry.getRegistry();					
+				//Loga naquele partserver e pede a lista
+				InterfacePartServer ps=(InterfacePartServer) registry.lookup(Splitted[2]);
+				resp.append(ps.consultaRecipes());
+				break;
+			case "servers":
+				resp.append(mundo.listaServers());
+				break;
+			}
+			
+			
+		break;
 				
 				default: 
 					resp.append("Comando invalido! Apenas parts podem ser montadas. \n");
@@ -155,34 +155,52 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 	}
 
 
-void adicionaItem(String nome) {
-	
+void adicionaItemNoServer(String nome) throws RemoteException {
+	mundo.adicionaItemNoServer(nome);
 }
 
-void adicionaMaterial(String nome) {
+void adicionaMaterialNoServer(String nome,int Headdurabilidade,int Partsdurabilidade,int handleDurabilidade,float durabilityModifier) throws RemoteException {
 	
-}
-void adicionaEncantamento(String nome) {
+	//Parte de encantamentos não foi implementada
+	mundo.adicionaMaterialNoServer(nome, Headdurabilidade, null, null, Partsdurabilidade, null, null, handleDurabilidade, durabilityModifier);
 	
-}
-void adicionaPart(String nome) {
-	
-}
-void adicionaBloco(String nome) {
-	
+	 
 }
 
-void criaPartServer(String nome) {
+void adicionaPartRecipeNoServer(String nome, String nomeMaquinaRegistry,String[] recipeString, String nomeMaterial) throws RemoteException, NotBoundException {
+	Registry registry = LocateRegistry.getRegistry();	
+	//Coloca na lista de itens
+	mundo.adicionaItemNoServer(nome);
 	
+	//Loga naquele partserver e adiciona
+	InterfacePartServer ps=(InterfacePartServer) registry.lookup(nomeMaquinaRegistry);
+	System.out.print("Tentando adicionar no mundo"+ps.getNome()+"\n");
+	
+	ps.AdicionaRecipe(nome, recipeString, nomeMaterial);
+}
+void adicionaBlocoNoServer(String nome) throws RemoteException {
+	mundo.adicionaItemNoServer(nome);
+	//Bloco não foi implementado
 }
 
-void criaRecipe(String nome) {
-	
+
+
+
+void criaPartServer(String nome, String Funcao) throws RemoteException, NotBoundException, AlreadyBoundException {
+	 Registry registry = LocateRegistry.getRegistry();						 	
+	 PartServer partserv=new PartServer(nome, Funcao,registry); 
+	 System.out.println("Servidor: "+nome+" alocado com sucesso");
+		
 }
 
 
-void DesligaPartServer(String nome) {
-	
+
+
+void DesligaPartServer(String nome) throws RemoteException, NotBoundException {
+	Registry registry = LocateRegistry.getRegistry();
+	registry.unbind(nome);
+	mundo.removeServer(nome);
+	System.out.println("Servidor: "+nome+" desligado com sucesso");
 }
 
 

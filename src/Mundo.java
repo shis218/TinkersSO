@@ -8,6 +8,7 @@ import java.rmi.server.*;
 import java.rmi.registry.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Mundo implements InterfaceMundo  {
 //Mundo é um sistema unico que possui blocos, maquinas, jogadores
@@ -38,33 +39,61 @@ private ListaDeMateriais materiais=new ListaDeMateriais();
 public int adicionaItemNoServer(String Nome) {
 	//Esse adiciona item é tanto para Partes/Blocos/Itens, já que a lista deles é unica que é seus Ids-nomes
 	
-	return lista.AdicionaItem(Nome); 
+	return lista.AdicionaItem(Nome.toLowerCase()); 
 }
 
 
+public int adicionaMaterialNoServer(String nome,int Headdurabilidade,Encantamento  Headenchant1,Encantamento  Headenchant2,int Partsdurabilidade,Encantamento  Partenchant1,Encantamento  Partenchant2,int handleDurabilidade,float durabilityModifier) {
+	
+	 
+	return materiais.Adiciona(nome.toLowerCase(), Headdurabilidade, Headenchant1, Headenchant2, Partsdurabilidade, Partenchant1, Partenchant2, handleDurabilidade, durabilityModifier);
+	
+}
+public String PrintaMateriais() {
+	return materiais.listMats();
+}
+
+public String listaItens() {
+	return lista.listItems().toString();
+}
 
 public ArrayList<String[]> getNomelistaDeServidoresConhecidos() {
 	return nomelistaDeServidoresConhecidos;
 }
 
 public int getidItem(String nome) {
+	if(nome.equals("null")) {
+		return -1;
+	}
 	return lista.getIdByNome(nome);
 }
 
 
 public String getStringItem(int id) {
-	
+	if(id==-1) {
+		return "null";
+	}
 	return lista.getNomeByID(id);
 }
 
 public int getidMaterial(String nome) {
+	if(nome.equals("null")) {
+		return -1;
+	}
 	return materiais.getIdByNome(nome);
 }
 
 public String getStringMaterial(int id) {
+	if(id==-1) {
+		return "null";
+	}
 	return materiais.getNomeByID(id);
 }
 public Material getMaterialbyString(String nome) {
+	
+	if(nome.equals("null")) {
+		return null;
+	}
 	return materiais.getMaterialByNome(nome);
 	
 }
@@ -73,7 +102,7 @@ public Material getMaterialbyString(String nome) {
 public void adicionaPartServer(String Nome, String Funcao) {
     //binda a classe na lista de nomes do server
 	String[] partserver=new String[2];
-	partserver[0]=Nome;
+	partserver[0]=Nome.toLowerCase();
 	partserver[1]=Funcao;
 	nomelistaDeServidoresConhecidos.add(partserver);	
 	
@@ -140,8 +169,8 @@ private void MontaListaDeItensInicial(Mundo World) {
 	World.lista.AdicionaItem("Slime"); 
 	World.lista.AdicionaItem("Sponge"); 
 	//String nome,int Headdurabilidade,Encantamento  Headenchant1,Encantamento  Headenchant2,int Partsdurabilidade,Encantamento  Partenchant1,Encantamento  Partenchant2,int handleDurabilidade,float durabilityModifier) {
-	World.materiais.Adiciona("Paper", 12, null, null, 15, null, null, 5, (float) 0.10);
-	World.materiais.Adiciona("Constantan", 26, null, null, 6, null, null, 6, (float) 0.80);
+	World.materiais.Adiciona("paper", 12, null, null, 15, null, null, 5, (float) 0.10);
+	World.materiais.Adiciona("constantan", 26, null, null, 6, null, null, 6, (float) 0.80);
 	System.out.println(World.materiais.listMats());
 }
 
@@ -179,6 +208,39 @@ public Bloco geraBloco(int id) throws RemoteException {
 	return bgerada;
 	
 }
+
+
+@Override
+public void removeServer(String nome) {
+		
+		for(int i=0;i<nomelistaDeServidoresConhecidos.size();i++) {
+			if(nomelistaDeServidoresConhecidos.get(i)[0].equals(nome)) {
+				nomelistaDeServidoresConhecidos.remove(i);
+			}
+		}
+		
+		
+		return;
+	}
+
+
+@Override
+public String listaServers() throws RemoteException {
+	StringBuilder resp=new StringBuilder();
+	resp.append("Nome---Funcao: \n");
+	int numero=0;
+	Iterator<String[]> iv=nomelistaDeServidoresConhecidos.iterator();
+	resp.append("\n");
+	while(iv.hasNext()) {
+	String[] a=iv.next();
+	resp.append(a[0]+"---"+a[1]+"\n");
+	numero++;
+	}
+	return resp.toString();
+}
+	
+
+
 
 
 

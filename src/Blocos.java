@@ -1,5 +1,10 @@
 
 public class Blocos implements Bloco {
+	/*Blocos não foram implementados até o fim, apenas o esqueleto de sua classe*/
+	
+	
+	
+	
 //Blocos são um tipo especial de partes que não podem ser montados, eles apenas existem e não tem uma receita para crialos
 //Blocos podem ser utilizados como receita de parts/items
 //Blocos podem ser colocados no mundo

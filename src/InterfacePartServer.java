@@ -7,9 +7,9 @@ public interface InterfacePartServer extends Remote {
 	
 	String getNome() throws RemoteException;
 	Part AdicionaRecipe(String nome, String[] recipeString, String NomeMaterial) throws RemoteException;
-	String consultaRecipes();
-	Part ProcuraRecipe(String nome);
-	Part MontaRecipe(String nome,int[] codigodaspecasusadas);
-	Part MontaRecipe(int id,int[] codigodaspecasusadas) ;
+	String consultaRecipes() throws RemoteException;
+	Part ProcuraRecipe(String nome) throws RemoteException;
+	Part MontaRecipe(String nome,int[] codigodaspecasusadas) throws RemoteException;
+	Part MontaRecipe(int id,int[] codigodaspecasusadas) throws RemoteException;
 	
 }

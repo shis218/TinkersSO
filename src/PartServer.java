@@ -11,6 +11,10 @@ import java.util.Iterator;
 
 import minimoentregavel.parts;
 public class PartServer implements Remote, InterfacePartServer, Serializable {
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8987587619729336852L;
 int count=0;
 private String nome; //Nome desse server no registry
 ArrayList<Parts> vecParts=new ArrayList<Parts>();
@@ -45,6 +49,7 @@ public  PartServer(String nome,String function,Registry registry) throws AccessE
 		Parts p=new Parts(ingameID,nome, recipeString, recipeIDS,m);
 		//Adiciona na lista e depois devolve essa parte como resposta
 		vecParts.add(p);
+		System.out.println("\n Adicionando ids:"+recipeIDS[0]+ "-"+recipeIDS[1]+"-");
 		return p;
 	}
 
@@ -58,7 +63,7 @@ public  PartServer(String nome,String function,Registry registry) throws AccessE
 		Iterator<Parts> iv=vecParts.iterator();
 		resp.append("\n");
 		while(iv.hasNext()) {
-		resp.append(numero+" - "+iv.next()+"\n");
+		resp.append(numero+" - "+iv.next().getNome()+"\n");
 		numero++;
 		}
 		return resp.toString();

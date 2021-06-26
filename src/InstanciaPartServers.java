@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
@@ -8,7 +9,7 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class InstanciaPartServers implements Remote {
+public class InstanciaPartServers implements Remote, Serializable {
 
 	public static void main(String[] args) throws AccessException, RemoteException, NotBoundException, AlreadyBoundException {
 		// Lista de usarios-mundos-partServers conhecidos
