@@ -21,7 +21,17 @@ public class Items implements Item {
 	private boolean existe;  //Todos itens criados existem, caso delete o item, pode-se apenas deletar sua existencia, mas o programa atual nao lida com isso
 	private Part[] parteUsadas; //Guarda informações das peças usads para criação da ferramenta, incluindo os ids unicos. Isso pode ser util numa maquina de desmontar.
 
-	
+	public int getDurabilidade() {
+		return this.Durabilidade;
+	}
+	public void setDurabilidade(int i) {
+		System.out.println("Durabilidade trocada");
+		this.Durabilidade=i;
+		return;
+	}
+	public int getDurabilidadeMax() {
+		return this.DurabilidadeMax;
+	}
 	
 	@Override
 	public boolean isFerramenta() {

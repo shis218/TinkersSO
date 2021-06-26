@@ -169,8 +169,10 @@ private void MontaListaDeItensInicial(Mundo World) {
 	World.lista.AdicionaItem("Slime"); 
 	World.lista.AdicionaItem("Sponge"); 
 	//String nome,int Headdurabilidade,Encantamento  Headenchant1,Encantamento  Headenchant2,int Partsdurabilidade,Encantamento  Partenchant1,Encantamento  Partenchant2,int handleDurabilidade,float durabilityModifier) {
-	World.materiais.Adiciona("paper", 12, null, null, 15, null, null, 5, (float) 0.10);
-	World.materiais.Adiciona("constantan", 26, null, null, 6, null, null, 6, (float) 0.80);
+	World.materiais.Adiciona("paper", 1, null, null, 15, null, null, 5, (float) 0.10);
+	World.materiais.Adiciona("constantan", 260, null, null, 444, null, null, 60, (float) 0.80);
+	World.materiais.Adiciona("diamante", 1026, null, null, 255, null, null, 600, (float) 1.00);
+	World.materiais.Adiciona("madeira", 50, null, null, 55, null, null, 600, (float) 1.20);
 	System.out.println(World.materiais.listMats());
 }
 

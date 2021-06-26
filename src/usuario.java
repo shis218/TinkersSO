@@ -72,7 +72,7 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 		resp.append("\n Listando itens:\n");
 			for(int i=0;i<inventarioItens.length;i++) {
 				if(inventarioItens[i]!=null) {
-					resp.append("item no slot: "+i+ " - "+ inventarioItens[i].getNome());
+					resp.append("\n item no slot: "+i+ " - "+ inventarioItens[i].getNome());
 				}
 			}
 			return resp.toString();
@@ -81,7 +81,7 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 		resp.append("\n Listando parts:\\n");
 		for(int i=0;i<inventariopartes.length;i++) {
 			if(inventariopartes[i]!=null) {
-				resp.append("item no slot: "+i+ " - "+ inventariopartes[i].getNome());
+				resp.append("\n item no slot: "+i+ " - "+ inventariopartes[i].getNome());
 			}
 		}
 		return resp.toString();
@@ -90,7 +90,7 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 		resp.append("\n Listando blocos:\\n");
 		for(int i=0;i<inventarioblocos.length;i++) {
 			if(inventarioblocos[i]!=null) {
-				resp.append("item no slot: "+i+ " - "+ inventarioblocos[i].getNome());
+				resp.append("\n item no slot: "+i+ " - "+ inventarioblocos[i].getNome());
 			}
 		}
 		return resp.toString();
@@ -132,7 +132,7 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 	if(Comando.equalsIgnoreCase("help")){
 		resp.append("\n Para utilizar digite um dos comandos: adiciona/cria (blocos/parts/itens) [item name] ,monta parts [item name],  deleta(bloco/parts/itens) [item name] , ");
 		resp.append("\n loga [nome do server] , desloga , lista meus (itens/blocos/parts) , lista funções, lista (blocos/parts/itens) do server, procura server [funcao],loga aleatorio [função] ,");
-		resp.append("\n ");
+		resp.append("\n checa [part name], look [item id]");
 		
 		return resp.toString();
 	}
@@ -141,6 +141,28 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 	/*-----------Comandos com variavel-----------*/
 	String[] Splitted=Comando.toLowerCase().split(" ");
 	switch(Splitted[0]){
+		case "checa":
+			Part g=partserver.ProcuraRecipe(Splitted[1]);
+			resp.append("Itens pra fazer " +g.getNome()+" :");
+			String[] recipest=g.getRecipeString();
+			for(int i=0;i<9;i++) {
+				resp.append("\n"+recipest[i]);
+			}
+		break;
+		case "look":
+		Item ig=inventarioItens[Integer.parseInt(Splitted[1])];
+		resp.append("Nome do item:"+ ig.getNome()+"\n");
+		resp.append("Durabilidade Max:"+ ig.getDurabilidadeMax()+"\n");
+		
+		
+		for(int i=0;i<9;i++) {
+			resp.append("\n Parte:"+ ig.getParteUsadas()[i].getNome()+"\n");
+			resp.append("\n Material dessa parte"+ig.getMaterialTraits()[i].getNome());
+		}
+			
+		break;
+		
+	
 		case "adiciona":  //
 		case "cria":	
 			switch(Splitted[1]){
@@ -166,16 +188,20 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 				case "bloco":
 				case "blocos":
 					removeBloco(Integer.parseInt(Splitted[2]));
+					resp.append("Deletado");
 					break;
 				case "part":
 				case "parts":
 					removeParte(Integer.parseInt(Splitted[2]));
+					resp.append("Deletado");
 					break;
 					
 				case "item":
 				case "itens":
 					
 					removeItem(Integer.parseInt(Splitted[2]));
+					
+					resp.append("Deletado");
 					break;
 				
 			}	
@@ -202,18 +228,49 @@ public String Executa(String Comando) throws RemoteException, NotBoundException 
 				case "parts":
 				case "part":
 					//Monta a parte
-					int[] pv=new int[9];
-					pv[0]=Integer.parseInt(Splitted[3]);
-					pv[1]=Integer.parseInt(Splitted[4]);
-					pv[2]=Integer.parseInt(Splitted[5]);
-					pv[3]=Integer.parseInt(Splitted[6]);
-					pv[4]=Integer.parseInt(Splitted[7]);
-					pv[5]=Integer.parseInt(Splitted[8]);
-					pv[6]=Integer.parseInt(Splitted[9]);
-					pv[7]=Integer.parseInt(Splitted[10]);
-					partserver.MontaRecipe(Splitted[2],pv);
+					int[] recipeids=new int[9];
+					for(int i=0;i<9;i++) {
+						if(Splitted[i+3].equals("-1")) {
+							for(int j=i;j<9;j++) {
+								//Prenche com "null"
+								recipeids[j] = -1;
+							}
+							break;
+						}
+						recipeids[i]=Integer.parseInt(Splitted[i+3]);	
+					}
+					System.out.print("Montando item");
+					
+					
+					Part nova=partserver.MontaRecipe(Splitted[2],recipeids);
+					//Apos montar, adiciona a part no nova
+					adiciona(nova);
 				break;
-				
+				case "itens":
+					//Compoe o item com 3 parts, como ferramenta [Formato: nome, codigo do novo item(não esta salvo no server pois é do jogador), 3 parts pegas pelo index do inventario
+					boolean isFerramenta=true;
+					String nome=Splitted[2];
+					int ingameID=mundo.adicionaItemNoServer(Splitted[2]); //Caso ja exista, coloca o codigo do antigo aqui
+					int codigoDesteitem=(Integer.parseInt(Splitted[3]));
+					Material[] materialTraits=new Material[3]; 
+					Part[] parteUsadas= new Part[3];
+					for(int i=0;i<3;i++) {
+						Part p= inventariopartes[Integer.parseInt(Splitted[i+4])];
+						parteUsadas[i]=p;
+						materialTraits[i]=p.getMaterial();
+						
+					}
+					Encantamento[] enchants=null; //Encantamentos não implementados
+					
+					
+					Items in=new Items(true, ingameID, materialTraits, enchants, codigoDesteitem, nome, parteUsadas);
+					adiciona(in);
+					//Depois de criar o item, remove as partes usadas do inventario
+					removeParte(Integer.parseInt(Splitted[4]));
+					removeParte(Integer.parseInt(Splitted[5]));
+					removeParte(Integer.parseInt(Splitted[6]));
+					
+					break;
 				default: 
 					resp.append("Comando invalido! Apenas parts podem ser montadas. \n");
 					break;

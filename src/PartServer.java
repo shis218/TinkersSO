@@ -11,10 +11,7 @@ import java.util.Iterator;
 
 import minimoentregavel.parts;
 public class PartServer implements Remote, InterfacePartServer, Serializable {
-/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8987587619729336852L;
+
 int count=0;
 private String nome; //Nome desse server no registry
 ArrayList<Parts> vecParts=new ArrayList<Parts>();

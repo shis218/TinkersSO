@@ -97,7 +97,7 @@ public String Executa(String Comando) throws RemoteException, NotBoundException,
 				String nomeMaterial=Splitted[4];
 				String[] recipeString=new String[9];
 				for(int i=0;i<9;i++) {
-					if(Splitted[i+5].equals("0")) {
+					if(Splitted[i+5].equals("-1")) {
 						for(int j=i;j<9;j++) {
 							//Prenche com "null"
 							recipeString[j] = "null";

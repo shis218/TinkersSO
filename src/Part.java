@@ -7,6 +7,8 @@ public interface Part extends Remote {
 	int getCodigoDestaPeca() throws RemoteException;
 
 	String getNome() throws RemoteException;
+	
+	Material getMaterial() throws RemoteException;
 
 	String[] getRecipeString() throws RemoteException;
 

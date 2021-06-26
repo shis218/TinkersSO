@@ -23,7 +23,13 @@ private int[] recipeIDs; //Numero de InGameIDs do recipe
 private boolean existe;  //A peça existe e tem dados atrelados a ela
 private int[] codigoDasPeçasUsadas;  //Caso a parte seja criada, então deve colocar quais 'codigoDestaPeca'/'codigoDesteBloco'/'CodigoDesteItem' foram usadas pra completar a recipe
 
+
+	
 	//Getter-setters
+	public Material getMaterial() {
+		return this.materialTrait;
+	}
+	
 	@Override
 	public int getIngameID() {
 		return ingameID;

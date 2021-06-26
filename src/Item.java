@@ -16,6 +16,12 @@ public interface Item {
 	boolean isExiste();
 
 	Part[] getParteUsadas();
+	 int getDurabilidade() ;
+	 void setDurabilidade(int i) ;
+	 int getDurabilidadeMax() ;
+	
+	
+	
 
 	void setFerramenta(boolean isFerramenta);
 
